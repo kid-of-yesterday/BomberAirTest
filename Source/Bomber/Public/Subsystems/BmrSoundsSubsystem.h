@@ -138,6 +138,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "[Bomber]", meta = (DisplayName = "Play UI Click SFX"))
 	void PlayUIClickSFX();
 
+	/** Play the sound that is played every time the local player moves to another cell. */
+	UFUNCTION(BlueprintCallable, Category = "[Bomber]", meta = (DisplayName = "Play Player Move SFX"))
+	void PlayPlayerMoveSFX();
+
 	/*********************************************************************************************
 	 * Background Music
 	 ********************************************************************************************* */

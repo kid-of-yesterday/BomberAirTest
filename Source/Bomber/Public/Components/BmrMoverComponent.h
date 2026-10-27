@@ -4,6 +4,9 @@
 
 #include "MoverComponent.h"
 
+// Bomber
+#include "Structures/BmrCell.h"
+
 #include "BmrMoverComponent.generated.h"
 
 /*
@@ -53,6 +56,11 @@ protected:
 	 * Is used in walking mode to increase the movement speed when player picked up a Skate powerup. */
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Transient, Category = "[Bomber]", meta = (BlueprintProtected))
 	float CachedSkatePowerupAttribute = 0.f;
+
+	/** The last cell the locally controlled owner was standing on.
+	 * Is used to play the move sound cue every time the player moves to another cell. */
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly, Transient, Category = "[Bomber]", meta = (BlueprintProtected))
+	FBmrCell LastMoveSoundCell = FBmrCell::InvalidCell;
 
 	/*********************************************************************************************
 	 * Overrides
@@ -110,6 +118,10 @@ protected:
 	/** Is called by Move Input Action when player released the move input button, e.g: WASD or Arrow keys. */
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "[Bomber]", meta = (BlueprintProtected))
 	void OnMoveInputCompleted(const struct FInputActionValue& ActionValue);
+
+	/** Plays the move sound cue if locally controlled owner moved to another cell since the last call. */
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "[Bomber]", meta = (BlueprintProtected))
+	void TryPlayMoveSound(const class UBmrMapComponent* MapComponent);
 
 	/** Is called when the Skate attribute is changed, e.g: when player picked up a Skate powerup. */
 	void OnSkateAttributeChanged(const struct FOnAttributeChangeData& OnAttributeChangeData);
