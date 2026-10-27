@@ -13,7 +13,6 @@
 #include "Structures/BmrGameStateTag.h"
 #include "Structures/BmrGameplayTags.h"
 #include "Structures/BmrMoverSyncState.h"
-#include "Subsystems/BmrSoundsSubsystem.h"
 #include "Subsystems/GlobalMessageSubsystem.h"
 #include "UtilityLibraries/BmrCellUtilsLibrary.h"
 
@@ -242,16 +241,11 @@ void UBmrMoverComponent::OnPostMove_Implementation(const FMoverTimeStep& TimeSte
 		const FBmrCell SnappedCell = UBmrCellUtilsLibrary::SnapActorOnLevel(InOwnerPawn);
 		MapComponent->SetCell(SnappedCell);
 	}
-
-	TryPlayMoveSound(MapComponent);
 }
 
 // Called when queued teleport effect successfully applies, on every endpoint that ran simulation
 void UBmrMoverComponent::OnTeleported_Implementation(const FVector& FromLocation, const FQuat& FromRotation, const FVector& ToLocation, const FQuat& ToRotation)
 {
-	// Teleport is not a move, so reset the last cell to avoid playing move sound on respawn
-	LastMoveSoundCell = FBmrCell::InvalidCell;
-
 	if (ABmrGameState::Get().HasMatchingGameplayTag(FBmrGameStateTag::InGame))
 	{
 		// Only release teleport-tick block once game state allows movement
@@ -285,39 +279,6 @@ void UBmrMoverComponent::OnMoveInputTriggered_Implementation(const FInputActionV
 void UBmrMoverComponent::OnMoveInputCompleted_Implementation(const FInputActionValue& ActionValue)
 {
 	RequestMoveByIntent(FVector::ZeroVector);
-}
-
-// Plays the move sound cue if locally controlled owner moved to another cell since the last call
-void UBmrMoverComponent::TryPlayMoveSound_Implementation(const UBmrMapComponent* MapComponent)
-{
-	const APawn* InOwnerPawn = GetOwner<APawn>();
-	if (!MapComponent
-	    || !InOwnerPawn
-	    || !InOwnerPawn->IsLocallyControlled()
-	    || !InOwnerPawn->IsPlayerControlled())
-	{
-		// Play move sound only for the local player, not for AI or remote players
-		return;
-	}
-
-	const FBmrCell& CurrentCell = MapComponent->GetCell();
-	if (CurrentCell == LastMoveSoundCell)
-	{
-		// Still standing on the same cell
-		return;
-	}
-
-	const bool bHasMovedFromValidCell = LastMoveSoundCell.IsValid();
-	LastMoveSoundCell = CurrentCell;
-
-	if (bHasMovedFromValidCell
-	    && CurrentCell.IsValid())
-	{
-		if (UBmrSoundsSubsystem* SoundsSubsystem = UBmrSoundsSubsystem::GetSoundsSubsystem(this))
-		{
-			SoundsSubsystem->PlayPlayerMoveSFX();
-		}
-	}
 }
 
 // Is called when the Skate attribute is changed, e.g: when player picked up a Skate powerup

@@ -292,26 +292,6 @@ void UBmrSoundsSubsystem::PlayUIClickSFX()
 	}
 }
 
-// Play the sound that is played every time the local player moves to another cell
-void UBmrSoundsSubsystem::PlayPlayerMoveSFX()
-{
-	if (!CanPlaySounds())
-	{
-		return;
-	}
-
-	const ABmrGameState* GameState = UBmrBlueprintFunctionLibrary::GetGameState();
-	if (!GameState || !GameState->HasMatchingGameplayTag(FBmrGameStateTag::InGame))
-	{
-		return;
-	}
-
-	if (USoundBase* PlayerMoveSFX = UBmrSoundsDataAsset::Get().GetPlayerMoveSFX())
-	{
-		UGameplayStatics::PlaySound2D(GetWorld(), PlayerMoveSFX);
-	}
-}
-
 // Plays or stops each background music row based on world ASC tag state
 void UBmrSoundsSubsystem::TryUpdateBackgroundMusic()
 {
