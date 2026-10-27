@@ -71,6 +71,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[Bomber]", meta = (DisplayName = "Get UI Click SFX"))
 	FORCEINLINE USoundBase* GetUIClickSFX() const { return UIClickSFX; }
 
+	/** Returns the sound that is played every time the local player moves to another cell. */
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "[Bomber]", meta = (DisplayName = "Get Player Move SFX"))
+	FORCEINLINE USoundBase* GetPlayerMoveSFX() const { return PlayerMoveSFX; }
+
 protected:
 	/** The Sound Manager that is responsible for audio in game. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (BlueprintProtected, ShowOnlyInnerProperties))
@@ -115,4 +119,8 @@ protected:
 	/** The sound that is played on clicking any UI element. */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (BlueprintProtected, ShowOnlyInnerProperties, DisplayName = "UI Click SFX"))
 	TObjectPtr<USoundBase> UIClickSFX = nullptr;
+
+	/** The sound that is played every time the local player moves to another cell. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, meta = (BlueprintProtected, ShowOnlyInnerProperties, DisplayName = "Player Move SFX"))
+	TObjectPtr<USoundBase> PlayerMoveSFX = nullptr;
 };
