@@ -25,5 +25,5 @@ public:
 protected:
 	/** The test value that can be edited in Blueprints and changed by AddToValue. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "[Bomber]")
-	float TestValue = 0.f;
+	float TestValue = 55.f;
 };
