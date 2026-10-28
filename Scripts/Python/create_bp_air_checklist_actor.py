@@ -1,6 +1,6 @@
 # Copyright (c) Yevhenii Selivanov.
 
-# Creates (or updates) BP_AirChecklistActor derived from AAirChecklistActor,
+# Creates (or updates) BP_AirChecklistActor derived from AAirTest,
 # sets TestValue to 10, compiles and saves the Blueprint.
 # Run inside the Unreal Editor: Output Log -> Cmd dropdown -> Python, then:
 #   py "<ProjectDir>/Scripts/Python/create_bp_air_checklist_actor.py"
@@ -10,7 +10,7 @@ import unreal
 ASSET_DIR = "/Game/Bomber/Blueprints"
 ASSET_NAME = "BP_AirChecklistActor"
 ASSET_PATH = f"{ASSET_DIR}/{ASSET_NAME}"
-PARENT_CLASS_PATH = "/Script/Bomber.AirChecklistActor"
+PARENT_CLASS_PATH = "/Script/Bomber.AirTest"
 TEST_VALUE = 10.0
 
 parent_class = unreal.load_class(None, PARENT_CLASS_PATH)
